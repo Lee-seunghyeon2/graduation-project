@@ -1,0 +1,25 @@
+{
+  "name": "korean-prompt-improver-mcp",
+  "version": "0.1.0",
+  "description": "v0: 한국어 프롬프트 개선 MCP - 모호성 탐지 및 문맥 기반 해결",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.65.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "^2.2.0",
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

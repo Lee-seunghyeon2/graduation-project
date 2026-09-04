@@ -1,0 +1,2021 @@
+{
+  "environment": {
+    "model": "gemini-flash-latest",
+    "provider": "gemini",
+    "date": "2026-08-18",
+    "number_of_cases": 30,
+    "fixture_total": 30,
+    "successful_calls": 18,
+    "quota_failures": 12,
+    "parse_failures": 0,
+    "other_errors": 0,
+    "error_count": 12
+  },
+  "summary": {
+    "pass": 8,
+    "fail": 9,
+    "review": 1,
+    "error": 12
+  },
+  "results": [
+    {
+      "case_id": "R1",
+      "ambiguity_category": "reference",
+      "review_candidate": false,
+      "timestamp": "2026-08-19T01:31:54.426Z",
+      "verdict": "PASS",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference"
+      ],
+      "actual_ambiguity_types": [
+        "reference"
+      ],
+      "expected_status": "ready",
+      "actual_status": "ready",
+      "expected_decision": {
+        "reference": [
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {
+        "reference": [
+          "RESOLVED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 0,
+      "actual_questions": [],
+      "expected_resolved_value": {
+        "reference": [
+          "AI 아이디어 공모전 안내문",
+          "공모전"
+        ]
+      },
+      "actual_resolved_value": {
+        "reference": [
+          "AI 아이디어 공모전 안내문"
+        ]
+      },
+      "expected_behavior": "improved_prompt에는 '이거'가 아니라 AI 아이디어 공모전 안내문이라는 명시적 대상이 나타나야 한다.",
+      "improved_prompt": "다음 요청에 대한 실행 계획을 작성한다.\n\n[명시화된 요청]\nAI 아이디어 공모전 안내문 보고 준비 계획 짜줘.\n\n[확정된 정보]\n- \"이거\" → AI 아이디어 공모전 안내문 (문맥상 확정)\n\n[첨부 문서 반영 지침]\n첨부된 문서에 명시된 마감일, 제출물, 평가 기준, 요구사항이 있다면 반드시 계획에 반영한다.\n\n[출력 형식 지침]\n구체적인 단계별 실행 계획(할 일, 순서, 기한 고려사항 포함)으로 작성한다.",
+      "raw_analysis": {
+        "task": "planning",
+        "original_request": "이거 보고 준비 계획 짜줘.",
+        "ambiguities": [
+          {
+            "type": "reference",
+            "expression": "이거",
+            "candidates": [
+              "AI 아이디어 공모전 안내문"
+            ],
+            "context_support": "strong",
+            "impact": "low",
+            "top_candidate": "AI 아이디어 공모전 안내문",
+            "decision": "RESOLVED",
+            "resolved_value": "AI 아이디어 공모전 안내문"
+          }
+        ],
+        "questions": []
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "R2",
+      "ambiguity_category": "reference",
+      "review_candidate": false,
+      "timestamp": "2026-08-19T01:33:10.224Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "status 불일치: expected=[ready], actual=clarification_required",
+        "[reference] decision 불일치: expected=[RESOLVED], actual=[CLARIFICATION_REQUIRED]",
+        "질문 개수 범위 초과: expected=0-0, actual=1"
+      ],
+      "failure_classification": [
+        "Unnecessary Clarification",
+        "Question Generation Failure"
+      ],
+      "expected_ambiguity_types": [
+        "reference"
+      ],
+      "actual_ambiguity_types": [
+        "reference",
+        "degree"
+      ],
+      "expected_status": "ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "reference": [
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {
+        "reference": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "degree": [
+          "SAFE_INFERENCE"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "reference",
+          "question": "\"이 부분\"은(는) 다음 중 무엇을 의미하나요?\n1. 성장과정 초안 전체\n2. 성장과정 초안 중 특정 내용",
+          "options": [
+            "성장과정 초안 전체",
+            "성장과정 초안 중 특정 내용"
+          ]
+        }
+      ],
+      "expected_resolved_value": {
+        "reference": [
+          "성장과정"
+        ]
+      },
+      "actual_resolved_value": {
+        "reference": [
+          null
+        ],
+        "degree": [
+          null
+        ]
+      },
+      "expected_behavior": "단순히 대화 전체의 첫 번째 대상(지원동기)을 선택하면 실패. 가장 최근 대상(성장과정)이어야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "이 부분 조금 줄여줘.",
+        "ambiguities": [
+          {
+            "type": "reference",
+            "expression": "이 부분",
+            "candidates": [
+              "성장과정 초안 전체",
+              "성장과정 초안 중 특정 내용"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": "성장과정 초안 전체",
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          },
+          {
+            "type": "degree",
+            "expression": "조금",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "low",
+            "top_candidate": null,
+            "decision": "SAFE_INFERENCE",
+            "resolved_value": null
+          }
+        ],
+        "questions": [
+          "\"이 부분\"은(는) 다음 중 무엇을 의미하나요?\n1. 성장과정 초안 전체\n2. 성장과정 초안 중 특정 내용"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "R3",
+      "ambiguity_category": "reference",
+      "review_candidate": true,
+      "timestamp": "2026-08-19T01:33:47.004Z",
+      "verdict": "REVIEW",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference"
+      ],
+      "actual_ambiguity_types": [
+        "reference",
+        "omission"
+      ],
+      "expected_status": "clarification_required | ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "reference": [
+          "RESOLVED",
+          "SAFE_INFERENCE",
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {
+        "reference": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "omission": [
+          "RESOLVED"
+        ]
+      },
+      "expected_question_count": "0-1",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "reference",
+          "question": "\"이거\"은(는) 다음 중 무엇을 의미하나요?\n1. 공모전 모집요강\n2. 실행 계획 초안",
+          "options": [
+            "공모전 모집요강",
+            "실행 계획 초안"
+          ]
+        }
+      ],
+      "actual_resolved_value": {
+        "reference": [
+          null
+        ],
+        "omission": [
+          "실행 계획 초안"
+        ]
+      },
+      "expected_behavior": "경계 사례: 첨부 문서와 직전 생성 결과 모두 '이거'의 후보가 될 수 있음. 두 후보를 선택했을 때 결과가 의미 있게 달라진다고 판단하면 CLARIFICATION_REQUIRED가 합리적이나, 강제로 PASS/FAIL 처리하지 않고 모델의 근거(candidates, context_support, impact)를 기록한다.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "planning",
+        "original_request": "이거 기준으로 다시 작성해줘.",
+        "ambiguities": [
+          {
+            "type": "reference",
+            "expression": "이거",
+            "candidates": [
+              "공모전 모집요강",
+              "실행 계획 초안"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": "공모전 모집요강",
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          },
+          {
+            "type": "omission",
+            "expression": "다시 작성해줘",
+            "candidates": [
+              "실행 계획 초안"
+            ],
+            "context_support": "strong",
+            "impact": "low",
+            "top_candidate": "실행 계획 초안",
+            "decision": "RESOLVED",
+            "resolved_value": "실행 계획 초안"
+          }
+        ],
+        "questions": [
+          "\"이거\"은(는) 다음 중 무엇을 의미하나요?\n1. 공모전 모집요강\n2. 실행 계획 초안"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "O1",
+      "ambiguity_category": "omission",
+      "review_candidate": false,
+      "timestamp": "2026-08-19T01:32:22.433Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "status 불일치: expected=[ready], actual=clarification_required",
+        "[omission] decision 불일치: expected=[RESOLVED,SAFE_INFERENCE], actual=[CLARIFICATION_REQUIRED]",
+        "질문 개수 범위 초과: expected=0-0, actual=2"
+      ],
+      "failure_classification": [
+        "Unnecessary Clarification",
+        "Question Generation Failure"
+      ],
+      "expected_ambiguity_types": [
+        "omission"
+      ],
+      "actual_ambiguity_types": [
+        "degree",
+        "omission"
+      ],
+      "expected_status": "ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "omission": [
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {
+        "degree": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 2,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "degree",
+          "question": "\"좀 더\"에 대해 지켜야 할 구체적인 기준이 있다면 알려주세요. (예: 글자 수, 분량, 페이지 수 등)"
+        },
+        {
+          "id": "q2",
+          "type": "omission",
+          "question": "\"바꿔줘\"은(는) 다음 중 무엇을 의미하나요?\n1. 작성된 자기소개서 지원동기 초안 전체\n2. 지원동기 초안 내 주요 경험 및 사례 내용",
+          "options": [
+            "작성된 자기소개서 지원동기 초안 전체",
+            "지원동기 초안 내 주요 경험 및 사례 내용"
+          ]
+        }
+      ],
+      "expected_resolved_value": {
+        "omission": [
+          "지원동기"
+        ]
+      },
+      "actual_resolved_value": {
+        "degree": [
+          null
+        ],
+        "omission": [
+          null
+        ]
+      },
+      "expected_behavior": "수정 대상 = 지원동기. 질문 없이 처리되어야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "좀 더 구체적으로 바꿔줘.",
+        "ambiguities": [
+          {
+            "type": "degree",
+            "expression": "좀 더",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          },
+          {
+            "type": "omission",
+            "expression": "바꿔줘",
+            "candidates": [
+              "작성된 자기소개서 지원동기 초안 전체",
+              "지원동기 초안 내 주요 경험 및 사례 내용"
+            ],
+            "context_support": "strong",
+            "impact": "high",
+            "top_candidate": "작성된 자기소개서 지원동기 초안 전체",
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q2"
+          }
+        ],
+        "questions": [
+          "\"좀 더\"에 대해 지켜야 할 구체적인 기준이 있다면 알려주세요. (예: 글자 수, 분량, 페이지 수 등)",
+          "\"바꿔줘\"은(는) 다음 중 무엇을 의미하나요?\n1. 작성된 자기소개서 지원동기 초안 전체\n2. 지원동기 초안 내 주요 경험 및 사례 내용"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "O2",
+      "ambiguity_category": "omission",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T09:51:41.315Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "탐지 누락: [omission] 타입이 탐지되지 않음"
+      ],
+      "failure_classification": [
+        "Ambiguity Detection Failure"
+      ],
+      "expected_ambiguity_types": [
+        "omission"
+      ],
+      "actual_ambiguity_types": [
+        "reference"
+      ],
+      "expected_status": "clarification_required",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {
+        "reference": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "1-3",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "reference",
+          "question": "\"하나\"은(는) 다음 중 무엇을 의미하나요?\n1. 기술 설명\n2. 시장 분석\n3. 기대 효과",
+          "options": [
+            "기술 설명",
+            "시장 분석",
+            "기대 효과"
+          ]
+        }
+      ],
+      "actual_resolved_value": {
+        "reference": [
+          null
+        ]
+      },
+      "expected_behavior": "삭제 대상이 불명확하고 되돌리기 어려운 작업(impact high) -> CLARIFICATION_REQUIRED. 가능하면 세 항목을 후보로 제공하는 선택형 질문.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "하나는 빼줘.",
+        "ambiguities": [
+          {
+            "type": "reference",
+            "expression": "하나",
+            "candidates": [
+              "기술 설명",
+              "시장 분석",
+              "기대 효과"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          }
+        ],
+        "questions": [
+          "\"하나\"은(는) 다음 중 무엇을 의미하나요?\n1. 기술 설명\n2. 시장 분석\n3. 기대 효과"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "O3",
+      "ambiguity_category": "omission",
+      "review_candidate": false,
+      "timestamp": "2026-08-18T01:23:55.485Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "status 불일치: expected=[ready], actual=clarification_required",
+        "[omission] decision 불일치: expected=[RESOLVED,SAFE_INFERENCE], actual=[CLARIFICATION_REQUIRED]",
+        "질문 개수 범위 초과: expected=0-0, actual=1",
+        "unnecessary_question_risk: 질문이 필요 없다고 예상된 케이스에서 질문이 생성됨"
+      ],
+      "failure_classification": [
+        "Unnecessary Clarification",
+        "Question Generation Failure"
+      ],
+      "expected_ambiguity_types": [
+        "omission"
+      ],
+      "actual_ambiguity_types": [
+        "omission"
+      ],
+      "expected_status": "ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "omission": [
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "omission",
+          "question": "\"정리해줘\"은(는) 다음 중 무엇을 의미하나요?\n1. 프로젝트 결과보고서 초안 요약 및 구조화\n2. 프로젝트 결과보고서 초안 문장 및 서식 다듬기",
+          "options": [
+            "프로젝트 결과보고서 초안 요약 및 구조화",
+            "프로젝트 결과보고서 초안 문장 및 서식 다듬기"
+          ]
+        }
+      ],
+      "actual_resolved_value": {
+        "omission": [
+          null
+        ]
+      },
+      "expected_behavior": "대상은 첨부 문서, 일반적인 정리/요약 작업으로 수행 가능. '어떻게 정리할까요?'라고 불필요하게 질문하면 실패 후보로 기록.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "정리해줘.",
+        "ambiguities": [
+          {
+            "type": "omission",
+            "expression": "정리해줘",
+            "candidates": [
+              "프로젝트 결과보고서 초안 요약 및 구조화",
+              "프로젝트 결과보고서 초안 문장 및 서식 다듬기"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": "프로젝트 결과보고서 초안 요약 및 구조화",
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          }
+        ],
+        "questions": [
+          "\"정리해줘\"은(는) 다음 중 무엇을 의미하나요?\n1. 프로젝트 결과보고서 초안 요약 및 구조화\n2. 프로젝트 결과보고서 초안 문장 및 서식 다듬기"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "O4",
+      "ambiguity_category": "omission",
+      "review_candidate": false,
+      "timestamp": "2026-08-19T01:35:29.781Z",
+      "verdict": "PASS",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "omission"
+      ],
+      "actual_ambiguity_types": [
+        "omission"
+      ],
+      "expected_status": "clarification_required",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "1-3",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "omission",
+          "question": "\"바꿔줘\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        }
+      ],
+      "actual_resolved_value": {
+        "omission": [
+          null
+        ]
+      },
+      "expected_behavior": "작업 대상 자체를 확인할 수 없음 -> CLARIFICATION_REQUIRED.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "바꿔줘.",
+        "ambiguities": [
+          {
+            "type": "omission",
+            "expression": "바꿔줘",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          }
+        ],
+        "questions": [
+          "\"바꿔줘\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "D1",
+      "ambiguity_category": "degree",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T09:55:24.081Z",
+      "verdict": "PASS",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "degree"
+      ],
+      "actual_ambiguity_types": [
+        "degree",
+        "omission"
+      ],
+      "expected_status": "ready",
+      "actual_status": "ready",
+      "expected_decision": {
+        "degree": [
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {
+        "degree": [
+          "RESOLVED"
+        ],
+        "omission": [
+          "RESOLVED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 0,
+      "actual_questions": [],
+      "expected_resolved_value": {
+        "degree": [
+          "700자"
+        ]
+      },
+      "actual_resolved_value": {
+        "degree": [
+          "700자 이내로 축소"
+        ],
+        "omission": [
+          "자기소개서 초안"
+        ]
+      },
+      "expected_behavior": "degree 표현은 존재하지만 700자 기준을 문서에서 찾을 수 있음 -> RESOLVED, improved_prompt에 700자 이내 조건 반영.",
+      "improved_prompt": "다음 요청에 따라 문서를 작성/수정한다.\n\n[명시화된 요청]\n700자 이내로 축소 자기소개서 초안.\n\n[확정된 정보]\n- \"좀\" → 700자 이내로 축소 (문맥상 확정)\n- \"줄여줘\" → 자기소개서 초안 (문맥상 확정)\n\n[첨부 자료 반영 지침]\n첨부된 자료의 내용을 근거로 작성하며, 자료에 명시된 사실과 어긋나지 않게 한다.\n\n[출력 형식 지침]\n위에서 확정된 대상/범위/기준/스타일을 그대로 반영하여 완성도 있는 문서를 작성한다.",
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "좀 줄여줘.",
+        "ambiguities": [
+          {
+            "type": "degree",
+            "expression": "좀",
+            "candidates": [
+              "700자 이내로 축소"
+            ],
+            "context_support": "strong",
+            "impact": "high",
+            "top_candidate": "700자 이내로 축소",
+            "decision": "RESOLVED",
+            "resolved_value": "700자 이내로 축소"
+          },
+          {
+            "type": "omission",
+            "expression": "줄여줘",
+            "candidates": [
+              "자기소개서 초안"
+            ],
+            "context_support": "strong",
+            "impact": "low",
+            "top_candidate": "자기소개서 초안",
+            "decision": "RESOLVED",
+            "resolved_value": "자기소개서 초안"
+          }
+        ],
+        "questions": []
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "D2",
+      "ambiguity_category": "degree",
+      "review_candidate": false,
+      "timestamp": "2026-08-18T01:25:01.317Z",
+      "verdict": "PASS",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "degree"
+      ],
+      "actual_ambiguity_types": [
+        "degree",
+        "omission"
+      ],
+      "expected_status": "ready",
+      "actual_status": "ready",
+      "expected_decision": {
+        "degree": [
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {
+        "degree": [
+          "SAFE_INFERENCE"
+        ],
+        "omission": [
+          "RESOLVED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 0,
+      "actual_questions": [],
+      "actual_resolved_value": {
+        "degree": [
+          null
+        ],
+        "omission": [
+          "자기소개서 지원동기 내용"
+        ]
+      },
+      "expected_behavior": "impact low -> SAFE_INFERENCE, 질문 없음.",
+      "improved_prompt": "다음 요청에 따라 문서를 작성/수정한다.\n\n[명시화된 요청]\n자기소개서 지원동기 내용을 조금만 더 자세하게 써줘.\n\n[확정된 정보]\n- \"설명\" → 자기소개서 지원동기 내용 (문맥상 확정)\n\n[출력 형식 지침]\n위에서 확정된 대상/범위/기준/스타일을 그대로 반영하여 완성도 있는 문서를 작성한다.",
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "설명을 조금만 더 자세하게 써줘.",
+        "ambiguities": [
+          {
+            "type": "degree",
+            "expression": "조금만 더",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "low",
+            "top_candidate": null,
+            "decision": "SAFE_INFERENCE",
+            "resolved_value": null
+          },
+          {
+            "type": "omission",
+            "expression": "설명",
+            "candidates": [
+              "자기소개서 지원동기 내용"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": "자기소개서 지원동기 내용",
+            "decision": "RESOLVED",
+            "resolved_value": "자기소개서 지원동기 내용"
+          }
+        ],
+        "questions": []
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "D3",
+      "ambiguity_category": "degree",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:00:55.371Z",
+      "verdict": "PASS",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "degree"
+      ],
+      "actual_ambiguity_types": [
+        "degree",
+        "omission"
+      ],
+      "expected_status": "clarification_required",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "degree": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {
+        "degree": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "omission": [
+          "RESOLVED"
+        ]
+      },
+      "expected_question_count": "1-1",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "degree",
+          "question": "\"분량에 맞게\"에 대해 지켜야 할 구체적인 기준이 있다면 알려주세요. (예: 글자 수, 분량, 페이지 수 등)"
+        }
+      ],
+      "actual_resolved_value": {
+        "degree": [
+          null
+        ],
+        "omission": [
+          "이번 문서"
+        ]
+      },
+      "expected_behavior": "결과에 중요한 수치 기준이 존재해야 하지만 실제 값이 없음 -> CLARIFICATION_REQUIRED.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "분량에 맞게 줄여줘.",
+        "ambiguities": [
+          {
+            "type": "degree",
+            "expression": "분량에 맞게",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          },
+          {
+            "type": "omission",
+            "expression": "줄여줘",
+            "candidates": [
+              "이번 문서"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": "이번 문서",
+            "decision": "RESOLVED",
+            "resolved_value": "이번 문서"
+          }
+        ],
+        "questions": [
+          "\"분량에 맞게\"에 대해 지켜야 할 구체적인 기준이 있다면 알려주세요. (예: 글자 수, 분량, 페이지 수 등)"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "D4",
+      "ambiguity_category": "degree",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:04:27.201Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "status 불일치: expected=[ready], actual=clarification_required",
+        "[degree] decision 불일치: expected=[SAFE_INFERENCE,RESOLVED], actual=[CLARIFICATION_REQUIRED]",
+        "질문 개수 범위 초과: expected=0-0, actual=1"
+      ],
+      "failure_classification": [
+        "Unnecessary Clarification",
+        "Question Generation Failure"
+      ],
+      "expected_ambiguity_types": [
+        "degree"
+      ],
+      "actual_ambiguity_types": [
+        "degree",
+        "omission"
+      ],
+      "expected_status": "ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "degree": [
+          "SAFE_INFERENCE",
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {
+        "degree": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "omission": [
+          "RESOLVED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "degree",
+          "question": "\"조금 더 짧게\"에 대해 지켜야 할 구체적인 기준이 있다면 알려주세요. (예: 글자 수, 분량, 페이지 수 등)"
+        }
+      ],
+      "expected_resolved_value": {
+        "degree": [
+          "500자"
+        ]
+      },
+      "actual_resolved_value": {
+        "degree": [
+          null
+        ],
+        "omission": [
+          "지원동기 내용 축소"
+        ]
+      },
+      "expected_behavior": "이전 대화의 500자 기준을 활용해 질문 없이 처리되어야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "조금 더 짧게 해줘.",
+        "ambiguities": [
+          {
+            "type": "degree",
+            "expression": "조금 더 짧게",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          },
+          {
+            "type": "omission",
+            "expression": "해줘",
+            "candidates": [
+              "지원동기 내용 축소"
+            ],
+            "context_support": "strong",
+            "impact": "low",
+            "top_candidate": "지원동기 내용 축소",
+            "decision": "RESOLVED",
+            "resolved_value": "지원동기 내용 축소"
+          }
+        ],
+        "questions": [
+          "\"조금 더 짧게\"에 대해 지켜야 할 구체적인 기준이 있다면 알려주세요. (예: 글자 수, 분량, 페이지 수 등)"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "C1",
+      "ambiguity_category": "comparison",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:11:02.980Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "status 불일치: expected=[ready], actual=clarification_required",
+        "[comparison] decision 불일치: expected=[RESOLVED], actual=[CLARIFICATION_REQUIRED]",
+        "질문 개수 범위 초과: expected=0-0, actual=1"
+      ],
+      "failure_classification": [
+        "Unnecessary Clarification",
+        "Question Generation Failure"
+      ],
+      "expected_ambiguity_types": [
+        "comparison"
+      ],
+      "actual_ambiguity_types": [
+        "comparison"
+      ],
+      "expected_status": "ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "comparison": [
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {
+        "comparison": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "comparison",
+          "question": "\"전처럼\"은(는) 다음 중 무엇을 의미하나요?\n1. 이전에 작성된 지원동기 예시 A의 문체 및 스타일 기준\n2. 이전에 작성된 지원동기 예시 A의 분량 및 구성 방식",
+          "options": [
+            "이전에 작성된 지원동기 예시 A의 문체 및 스타일 기준",
+            "이전에 작성된 지원동기 예시 A의 분량 및 구성 방식"
+          ]
+        }
+      ],
+      "expected_resolved_value": {
+        "comparison": [
+          "지원동기"
+        ]
+      },
+      "actual_resolved_value": {
+        "comparison": [
+          null
+        ]
+      },
+      "expected_behavior": "comparison 대상 = 직전 지원동기 예시 A. 최종 prompt에서는 '전처럼'을 그대로 남기지 말고 비교 대상/기준을 명시해야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "성장과정도 전처럼 작성해줘.",
+        "ambiguities": [
+          {
+            "type": "comparison",
+            "expression": "전처럼",
+            "candidates": [
+              "이전에 작성된 지원동기 예시 A의 문체 및 스타일 기준",
+              "이전에 작성된 지원동기 예시 A의 분량 및 구성 방식"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": "이전에 작성된 지원동기 예시 A의 문체 및 스타일 기준",
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          }
+        ],
+        "questions": [
+          "\"전처럼\"은(는) 다음 중 무엇을 의미하나요?\n1. 이전에 작성된 지원동기 예시 A의 문체 및 스타일 기준\n2. 이전에 작성된 지원동기 예시 A의 분량 및 구성 방식"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "C2",
+      "ambiguity_category": "comparison",
+      "review_candidate": false,
+      "timestamp": "2026-08-18T01:26:20.845Z",
+      "verdict": "PASS",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "comparison"
+      ],
+      "actual_ambiguity_types": [
+        "comparison"
+      ],
+      "expected_status": "clarification_required",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "comparison": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {
+        "comparison": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "1-1",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "comparison",
+          "question": "\"전처럼\"은(는) 다음 중 무엇을 의미하나요?\n1. 보고서 v2\n2. 보고서 v1",
+          "options": [
+            "보고서 v2",
+            "보고서 v1"
+          ]
+        }
+      ],
+      "actual_resolved_value": {
+        "comparison": [
+          null
+        ]
+      },
+      "expected_behavior": "비교 후보가 여러 개이고 결과 차이가 큼 -> CLARIFICATION_REQUIRED. 가능하면 v1/v2/v3를 후보로 제시.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "전처럼 다시 만들어줘.",
+        "ambiguities": [
+          {
+            "type": "comparison",
+            "expression": "전처럼",
+            "candidates": [
+              "보고서 v2",
+              "보고서 v1"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": "보고서 v2",
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          }
+        ],
+        "questions": [
+          "\"전처럼\"은(는) 다음 중 무엇을 의미하나요?\n1. 보고서 v2\n2. 보고서 v1"
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "C3",
+      "ambiguity_category": "comparison",
+      "review_candidate": false,
+      "timestamp": "2026-09-03T02:33:33.848Z",
+      "verdict": "PASS",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "comparison"
+      ],
+      "actual_ambiguity_types": [
+        "comparison"
+      ],
+      "expected_status": "ready",
+      "actual_status": "ready",
+      "expected_decision": {
+        "comparison": [
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {
+        "comparison": [
+          "RESOLVED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 0,
+      "actual_questions": [],
+      "actual_resolved_value": {
+        "comparison": [
+          "직전 대화에서 작성된 지원동기 문단의 문체"
+        ]
+      },
+      "expected_behavior": "'비슷한'이라는 표현만 보고 모호하다고 판단하면 안 됨. 비교 대상 = 지원동기, 질문 없이 처리되어야 한다.",
+      "improved_prompt": "다음 요청에 따라 문서를 작성/수정한다.\n\n[명시화된 요청]\n앞에서 작성한 지원동기와 직전 대화에서 작성된 지원동기 문단의 문체 문체로 성장과정을 작성해줘.\n\n[확정된 정보]\n- \"비슷한\" → 직전 대화에서 작성된 지원동기 문단의 문체 (문맥상 확정)\n\n[출력 형식 지침]\n위에서 확정된 대상/범위/기준/스타일을 그대로 반영하여 완성도 있는 문서를 작성한다.",
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "앞에서 작성한 지원동기와 비슷한 문체로 성장과정을 작성해줘.",
+        "ambiguities": [
+          {
+            "type": "comparison",
+            "expression": "비슷한",
+            "candidates": [
+              "직전 대화에서 작성된 지원동기 문단의 문체"
+            ],
+            "context_support": "strong",
+            "impact": "low",
+            "top_candidate": "직전 대화에서 작성된 지원동기 문단의 문체",
+            "decision": "RESOLVED",
+            "resolved_value": "직전 대화에서 작성된 지원동기 문단의 문체"
+          }
+        ],
+        "questions": []
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "C4",
+      "ambiguity_category": "comparison",
+      "review_candidate": false,
+      "timestamp": "2026-09-03T02:34:19.337Z",
+      "verdict": "PASS",
+      "failure_reasons": [],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "comparison"
+      ],
+      "actual_ambiguity_types": [
+        "comparison",
+        "omission"
+      ],
+      "expected_status": "clarification_required",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "comparison": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {
+        "comparison": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "1-3",
+      "actual_question_count": 2,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "comparison",
+          "question": "\"저번처럼\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        },
+        {
+          "id": "q2",
+          "type": "omission",
+          "question": "\"만들어줘\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        }
+      ],
+      "actual_resolved_value": {
+        "comparison": [
+          null
+        ],
+        "omission": [
+          null
+        ]
+      },
+      "expected_behavior": "비교 대상 없음 -> CLARIFICATION_REQUIRED.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "저번처럼 만들어줘.",
+        "ambiguities": [
+          {
+            "type": "comparison",
+            "expression": "저번처럼",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          },
+          {
+            "type": "omission",
+            "expression": "만들어줘",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q2"
+          }
+        ],
+        "questions": [
+          "\"저번처럼\"이(가) 정확히 무엇을 가리키는지 알려주세요.",
+          "\"만들어줘\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "S1",
+      "ambiguity_category": "scope",
+      "review_candidate": false,
+      "timestamp": "2026-09-03T02:35:05.947Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "status 불일치: expected=[ready], actual=clarification_required",
+        "질문 개수 범위 초과: expected=0-0, actual=1"
+      ],
+      "failure_classification": [
+        "Unnecessary Clarification",
+        "Question Generation Failure"
+      ],
+      "expected_ambiguity_types": [
+        "scope"
+      ],
+      "actual_ambiguity_types": [
+        "scope",
+        "omission"
+      ],
+      "expected_status": "ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "scope": [
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {
+        "scope": [
+          "RESOLVED"
+        ],
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 1,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "omission",
+          "question": "\"고쳐줘\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        }
+      ],
+      "expected_resolved_value": {
+        "scope": [
+          "지원동기"
+        ]
+      },
+      "actual_resolved_value": {
+        "scope": [
+          "자기소개서 지원동기 문단"
+        ],
+        "omission": [
+          null
+        ]
+      },
+      "expected_behavior": "scope = 지원동기 문단, 질문 없이 처리되어야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "여기만 고쳐줘.",
+        "ambiguities": [
+          {
+            "type": "scope",
+            "expression": "여기만",
+            "candidates": [
+              "자기소개서 지원동기 문단"
+            ],
+            "context_support": "strong",
+            "impact": "high",
+            "top_candidate": "자기소개서 지원동기 문단",
+            "decision": "RESOLVED",
+            "resolved_value": "자기소개서 지원동기 문단"
+          },
+          {
+            "type": "omission",
+            "expression": "고쳐줘",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          }
+        ],
+        "questions": [
+          "\"고쳐줘\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "S2",
+      "ambiguity_category": "scope",
+      "review_candidate": false,
+      "timestamp": "2026-09-03T02:47:42.226Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash\nPlease retry in 17.900138489s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference",
+        "scope"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "clarification_required",
+      "actual_status": null,
+      "expected_decision": {
+        "reference": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "scope": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "1-2",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "reference와 scope 후보가 여러 개, impact high -> CLARIFICATION_REQUIRED. 질문은 reference/scope를 따로 2개 생성하지 말고 가능하면 하나로 통합하는 것이 이상적 (question_count=1이 최선, 2까지는 허용).",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash\nPlease retry in 17.900138489s."
+    },
+    {
+      "case_id": "S3",
+      "ambiguity_category": "scope",
+      "review_candidate": false,
+      "timestamp": "2026-09-03T02:40:17.414Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash\nPlease retry in 42.620235028s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "scope"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "ready",
+      "actual_status": null,
+      "expected_decision": {
+        "scope": [
+          "SAFE_INFERENCE",
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "0-0",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "scope = 전체 문서 (대상 문서는 하나), degree는 SAFE_INFERENCE 수준. 질문 없음.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.8-flash\nPlease retry in 42.620235028s."
+    },
+    {
+      "case_id": "S4",
+      "ambiguity_category": "scope",
+      "review_candidate": true,
+      "timestamp": "2026-08-29T10:33:24.121Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 36.950538322s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "scope",
+        "degree"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "ready | clarification_required",
+      "actual_status": null,
+      "expected_decision": {
+        "scope": [
+          "SAFE_INFERENCE"
+        ],
+        "degree": [
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "0-1",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "scope+degree가 존재하지만 일반적인 문장 개선 수준이라 결과 위험이 낮음 -> SAFE_INFERENCE 기대. 경계 사례이므로 과도하게 질문하는지 기록 위주로 확인한다.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 36.950538322s."
+    },
+    {
+      "case_id": "M1",
+      "ambiguity_category": "compound",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:35:47.616Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 13.456716981s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference",
+        "scope",
+        "degree"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "ready | clarification_required",
+      "actual_status": null,
+      "expected_decision": {
+        "reference": [
+          "RESOLVED",
+          "CLARIFICATION_REQUIRED"
+        ],
+        "scope": [
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ],
+        "degree": [
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "0-1",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "reference가 문맥상 성장과정으로 해결되면 RESOLVED+questions=0이 이상적. 하나로 좁힐 수 없다면 대상 확인 질문 1개만 허용되고, '얼마나 길게 할까요?'(degree) 질문은 생성되면 안 된다(unnecessary).",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 13.456716981s."
+    },
+    {
+      "case_id": "M2",
+      "ambiguity_category": "compound",
+      "review_candidate": true,
+      "timestamp": "2026-08-29T10:38:10.961Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 50.101251499s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference",
+        "omission",
+        "comparison"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "clarification_required | ready",
+      "actual_status": null,
+      "expected_decision": {
+        "reference": [
+          "CLARIFICATION_REQUIRED",
+          "RESOLVED"
+        ],
+        "omission": [
+          "CLARIFICATION_REQUIRED",
+          "RESOLVED"
+        ],
+        "comparison": [
+          "CLARIFICATION_REQUIRED",
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "0-3",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "여러 종류의 모호성이 동시에 탐지될 수 있음. 작업 결과를 결정하는 핵심 reference/omission이 불명확하면 우선 그 대상에 대해 질문해야 하고, 질문 수가 불필요하게 3개까지 증가하면 과함으로 기록한다. 경계 사례라 REVIEW로 기록.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 50.101251499s."
+    },
+    {
+      "case_id": "M3",
+      "ambiguity_category": "compound",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:40:34.526Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 26.54440774s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference",
+        "scope",
+        "degree"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "ready",
+      "actual_status": null,
+      "expected_decision": {
+        "reference": [
+          "RESOLVED"
+        ],
+        "scope": [
+          "SAFE_INFERENCE"
+        ],
+        "degree": [
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "0-0",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "매우 중요한 케이스: 모호 표현의 개수(3개)가 질문 개수를 결정해서는 안 된다. reference만 RESOLVED로 확정되고 나머지는 SAFE_INFERENCE로 질문 없이 처리되어야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 26.54440774s."
+    },
+    {
+      "case_id": "M4",
+      "ambiguity_category": "compound",
+      "review_candidate": false,
+      "timestamp": "2026-08-19T07:03:14.814Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "질문 개수 범위 초과: expected=0-2, actual=3"
+      ],
+      "failure_classification": [
+        "Question Generation Failure"
+      ],
+      "expected_ambiguity_types": [
+        "comparison",
+        "scope"
+      ],
+      "actual_ambiguity_types": [
+        "comparison",
+        "scope",
+        "omission"
+      ],
+      "expected_status": "clarification_required | ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "comparison": [
+          "CLARIFICATION_REQUIRED",
+          "RESOLVED"
+        ],
+        "scope": [
+          "CLARIFICATION_REQUIRED",
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {
+        "comparison": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "scope": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "0-2",
+      "actual_question_count": 3,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "comparison",
+          "question": "\"전에 거 기준으로\"은(는) 다음 중 무엇을 의미하나요?\n1. 보고서 v1\n2. 보고서 v2",
+          "options": [
+            "보고서 v1",
+            "보고서 v2"
+          ]
+        },
+        {
+          "id": "q2",
+          "type": "scope",
+          "question": "\"이 부분만\"은(는) 다음 중 무엇을 의미하나요?\n1. 서론\n2. 기술 설명\n3. 기대 효과",
+          "options": [
+            "서론",
+            "기술 설명",
+            "기대 효과"
+          ]
+        },
+        {
+          "id": "q3",
+          "type": "omission",
+          "question": "\"수정해줘\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        }
+      ],
+      "actual_resolved_value": {
+        "comparison": [
+          null
+        ],
+        "scope": [
+          null
+        ],
+        "omission": [
+          null
+        ]
+      },
+      "expected_behavior": "comparison(v1/v2)과 scope(서론/기술 설명/기대 효과) 후보 모두 결과에 큰 영향을 줄 수 있음. 질문 개수는 반드시 2개 이하여야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "전에 거 기준으로 이 부분만 수정해줘.",
+        "ambiguities": [
+          {
+            "type": "comparison",
+            "expression": "전에 거 기준으로",
+            "candidates": [
+              "보고서 v1",
+              "보고서 v2"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": "보고서 v1",
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          },
+          {
+            "type": "scope",
+            "expression": "이 부분만",
+            "candidates": [
+              "서론",
+              "기술 설명",
+              "기대 효과"
+            ],
+            "context_support": "medium",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q2"
+          },
+          {
+            "type": "omission",
+            "expression": "수정해줘",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q3"
+          }
+        ],
+        "questions": [
+          "\"전에 거 기준으로\"은(는) 다음 중 무엇을 의미하나요?\n1. 보고서 v1\n2. 보고서 v2",
+          "\"이 부분만\"은(는) 다음 중 무엇을 의미하나요?\n1. 서론\n2. 기술 설명\n3. 기대 효과",
+          "\"수정해줘\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "FP1",
+      "ambiguity_category": "false_positive",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:42:57.651Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 3.415167606s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference",
+        "scope"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "ready",
+      "actual_status": null,
+      "expected_decision": {
+        "reference": [
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ],
+        "scope": [
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "0-0",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "expected_resolved_value": {
+        "reference": [
+          "결론"
+        ],
+        "scope": [
+          "결론"
+        ]
+      },
+      "actual_resolved_value": {},
+      "expected_behavior": "'이 부분' 뒤에 실제 대상(결론 문단)이 명시됨. 질문 없이 처리되어야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 3.415167606s."
+    },
+    {
+      "case_id": "FP2",
+      "ambiguity_category": "false_positive",
+      "review_candidate": false,
+      "timestamp": "2026-08-19T07:06:57.898Z",
+      "verdict": "FAIL",
+      "failure_reasons": [
+        "status 불일치: expected=[ready], actual=clarification_required",
+        "[comparison] decision 불일치: expected=[RESOLVED,SAFE_INFERENCE], actual=[CLARIFICATION_REQUIRED]",
+        "질문 개수 범위 초과: expected=0-0, actual=2",
+        "false_positive_check: 모호성이 문맥/문장 내에서 이미 해소되었는데 질문이 생성됨"
+      ],
+      "failure_classification": [
+        "Unnecessary Clarification",
+        "Question Generation Failure"
+      ],
+      "expected_ambiguity_types": [
+        "comparison"
+      ],
+      "actual_ambiguity_types": [
+        "reference",
+        "comparison"
+      ],
+      "expected_status": "ready",
+      "actual_status": "clarification_required",
+      "expected_decision": {
+        "comparison": [
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ]
+      },
+      "actual_decision": {
+        "reference": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "comparison": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "expected_question_count": "0-0",
+      "actual_question_count": 2,
+      "actual_questions": [
+        {
+          "id": "q1",
+          "type": "reference",
+          "question": "\"앞에서 작성한 지원동기\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        },
+        {
+          "id": "q2",
+          "type": "comparison",
+          "question": "\"같은 구조로\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        }
+      ],
+      "actual_resolved_value": {
+        "reference": [
+          null
+        ],
+        "comparison": [
+          null
+        ]
+      },
+      "expected_behavior": "비교 대상(지원동기)이 문장 자체에 명확히 존재. 질문 없이 처리되어야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": {
+        "task": "writing",
+        "original_request": "앞에서 작성한 지원동기와 같은 구조로 성장과정을 작성해줘.",
+        "ambiguities": [
+          {
+            "type": "reference",
+            "expression": "앞에서 작성한 지원동기",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q1"
+          },
+          {
+            "type": "comparison",
+            "expression": "같은 구조로",
+            "candidates": [],
+            "context_support": "weak",
+            "impact": "high",
+            "top_candidate": null,
+            "decision": "CLARIFICATION_REQUIRED",
+            "resolved_value": null,
+            "question_id": "q2"
+          }
+        ],
+        "questions": [
+          "\"앞에서 작성한 지원동기\"이(가) 정확히 무엇을 가리키는지 알려주세요.",
+          "\"같은 구조로\"이(가) 정확히 무엇을 가리키는지 알려주세요."
+        ]
+      },
+      "error_message": null
+    },
+    {
+      "case_id": "FN1",
+      "ambiguity_category": "false_negative",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:45:21.219Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 39.853158839s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "omission"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "clarification_required",
+      "actual_status": null,
+      "expected_decision": {
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "1-3",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "무엇을 작성해야 하는지 대상/내용이 전혀 없음. 특정 모호 단어 사전에 의존하지 않고 omission을 탐지해야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 39.853158839s."
+    },
+    {
+      "case_id": "FN2",
+      "ambiguity_category": "false_negative",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:47:44.761Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 16.307248802s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "omission",
+        "reference"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "clarification_required",
+      "actual_status": null,
+      "expected_decision": {
+        "omission": [
+          "CLARIFICATION_REQUIRED"
+        ],
+        "reference": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "1-3",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "degree(500자) 자체는 명확하지만 수정 대상이 생략됨(보고서 vs 자기소개서). omission 또는 reference 유형 중 하나라도 CLARIFICATION_REQUIRED로 탐지되어야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 16.307248802s."
+    },
+    {
+      "case_id": "CTX1",
+      "ambiguity_category": "context_conflict",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:50:08.316Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 52.750975876s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "ready",
+      "actual_status": null,
+      "expected_decision": {
+        "reference": [
+          "RESOLVED"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "0-0",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "expected_resolved_value": {
+        "reference": [
+          "700자"
+        ]
+      },
+      "actual_resolved_value": {},
+      "expected_behavior": "최신 사용자 명시 조건(700자)이 문서의 1,000자 조건보다 우선해야 한다.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 52.750975876s."
+    },
+    {
+      "case_id": "CTX2",
+      "ambiguity_category": "context_conflict",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:52:32.149Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 28.923418694s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "clarification_required",
+      "actual_status": null,
+      "expected_decision": {
+        "reference": [
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "1-1",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "reference 후보 2개(문서 A/B), 마감일 차이가 결과에 큰 영향 -> CLARIFICATION_REQUIRED.",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 28.923418694s."
+    },
+    {
+      "case_id": "QLIMIT1",
+      "ambiguity_category": "question_limit",
+      "review_candidate": false,
+      "timestamp": "2026-08-29T10:54:55.463Z",
+      "verdict": "ERROR",
+      "failure_reasons": [
+        "LLM 호출/파싱 실패: Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 5.593027949s."
+      ],
+      "failure_classification": [],
+      "expected_ambiguity_types": [
+        "reference",
+        "comparison",
+        "degree",
+        "scope"
+      ],
+      "actual_ambiguity_types": [],
+      "expected_status": "clarification_required | ready",
+      "actual_status": null,
+      "expected_decision": {
+        "reference": [
+          "CLARIFICATION_REQUIRED",
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ],
+        "comparison": [
+          "CLARIFICATION_REQUIRED",
+          "RESOLVED",
+          "SAFE_INFERENCE"
+        ],
+        "degree": [
+          "SAFE_INFERENCE",
+          "CLARIFICATION_REQUIRED"
+        ],
+        "scope": [
+          "SAFE_INFERENCE",
+          "RESOLVED",
+          "CLARIFICATION_REQUIRED"
+        ]
+      },
+      "actual_decision": {},
+      "expected_question_count": "0-3",
+      "actual_question_count": null,
+      "actual_questions": [],
+      "actual_resolved_value": {},
+      "expected_behavior": "context가 부족한 상태. 여러 ambiguity가 탐지될 수 있으나 질문은 최대 3개, 가능하면 1~2개로 압축되어야 한다. degree 때문에 별도 질문이 생성되지 않는 것이 바람직 (단순 <=3 확인이 아니라 핵심 ambiguity가 우선됐는지 기록).",
+      "improved_prompt": null,
+      "raw_analysis": null,
+      "error_message": "Gemini API 호출 실패: You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.7-flash\nPlease retry in 5.593027949s."
+    }
+  ]
+}

@@ -1,0 +1,631 @@
+{
+  "$schema_note": "각 case.input은 analyze_prompt(WorkflowInput)에 그대로 전달된다. expected는 자동 채점기(scripts/evaluate-v0-additional.ts)가 사용하는 판정 기준이다. review_candidate=true인 case는 PASS/FAIL 대신 REVIEW로 기록되고 모델의 실제 근거만 남긴다.",
+  "cases": [
+    {
+      "case_id": "R1",
+      "category": "reference",
+      "review_candidate": false,
+      "description": "첨부 문서 단일 후보 - '이거'가 첨부 문서를 가리킴",
+      "input": {
+        "current_user_request": "이거 보고 준비 계획 짜줘.",
+        "document_context": "파일명: AI 아이디어 공모전 안내문\n공모전 접수 기간, 제출 서류, 평가 기준이 포함되어 있다."
+      },
+      "expected": {
+        "ambiguity_types": ["reference"],
+        "status": "ready",
+        "decisions": { "reference": ["RESOLVED"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "reference": ["AI 아이디어 공모전 안내문", "공모전"] },
+        "improved_prompt_must_contain": ["공모전"],
+        "improved_prompt_must_not_contain": ["이거"],
+        "notes": "improved_prompt에는 '이거'가 아니라 AI 아이디어 공모전 안내문이라는 명시적 대상이 나타나야 한다."
+      }
+    },
+    {
+      "case_id": "R2",
+      "category": "reference",
+      "review_candidate": false,
+      "description": "최근 대상과 과거 대상이 다른 경우 - 대화 전체의 첫 대상이 아니라 가장 최근 대상을 선택해야 함",
+      "input": {
+        "current_user_request": "이 부분 조금 줄여줘.",
+        "recent_conversation": [
+          "User: 자기소개서 지원동기를 수정해줘.",
+          "Assistant: 지원동기 수정본을 작성함.",
+          "User: 이제 성장과정 문단을 수정해보자.",
+          "Assistant: 성장과정 초안을 작성함."
+        ]
+      },
+      "expected": {
+        "ambiguity_types": ["reference"],
+        "status": "ready",
+        "decisions": { "reference": ["RESOLVED"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "reference": ["성장과정"] },
+        "improved_prompt_must_contain": ["성장과정"],
+        "improved_prompt_must_not_contain": ["이 부분"],
+        "notes": "단순히 대화 전체의 첫 번째 대상(지원동기)을 선택하면 실패. 가장 최근 대상(성장과정)이어야 한다."
+      }
+    },
+    {
+      "case_id": "R3",
+      "category": "reference",
+      "review_candidate": true,
+      "description": "첨부 문서와 이전 출력이 동시에 존재하는 경계 사례",
+      "input": {
+        "current_user_request": "이거 기준으로 다시 작성해줘.",
+        "document_context": "공모전 모집요강",
+        "recent_conversation": ["Assistant: 모집요강을 바탕으로 실행 계획 초안을 작성함."]
+      },
+      "expected": {
+        "ambiguity_types": ["reference"],
+        "status": "clarification_required",
+        "status_alternatives": ["ready"],
+        "decisions": { "reference": ["RESOLVED", "SAFE_INFERENCE", "CLARIFICATION_REQUIRED"] },
+        "question_count_min": 0,
+        "question_count_max": 1,
+        "notes": "경계 사례: 첨부 문서와 직전 생성 결과 모두 '이거'의 후보가 될 수 있음. 두 후보를 선택했을 때 결과가 의미 있게 달라진다고 판단하면 CLARIFICATION_REQUIRED가 합리적이나, 강제로 PASS/FAIL 처리하지 않고 모델의 근거(candidates, context_support, impact)를 기록한다."
+      }
+    },
+    {
+      "case_id": "O1",
+      "category": "omission",
+      "review_candidate": false,
+      "description": "현재 Task에서 수정 대상 복원 가능",
+      "input": {
+        "current_user_request": "좀 더 구체적으로 바꿔줘.",
+        "recent_conversation": [
+          "User: 자기소개서 지원동기 문단을 수정하고 있어.",
+          "Assistant: 지원동기 초안을 작성함."
+        ]
+      },
+      "expected": {
+        "ambiguity_types": ["omission"],
+        "status": "ready",
+        "decisions": { "omission": ["RESOLVED", "SAFE_INFERENCE"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "omission": ["지원동기"] },
+        "improved_prompt_must_contain": ["지원동기"],
+        "notes": "수정 대상 = 지원동기. 질문 없이 처리되어야 한다."
+      }
+    },
+    {
+      "case_id": "O2",
+      "category": "omission",
+      "review_candidate": false,
+      "description": "삭제 대상이 생략됨 - impact high",
+      "input": {
+        "current_user_request": "하나는 빼줘.",
+        "recent_conversation": ["보고서 구성:\n1. 기술 설명\n2. 시장 분석\n3. 기대 효과"]
+      },
+      "expected": {
+        "ambiguity_types": ["omission"],
+        "status": "clarification_required",
+        "decisions": { "omission": ["CLARIFICATION_REQUIRED"] },
+        "question_count_min": 1,
+        "question_count_max": 3,
+        "question_options_hint": ["기술 설명", "시장 분석", "기대 효과"],
+        "notes": "삭제 대상이 불명확하고 되돌리기 어려운 작업(impact high) -> CLARIFICATION_REQUIRED. 가능하면 세 항목을 후보로 제공하는 선택형 질문."
+      }
+    },
+    {
+      "case_id": "O3",
+      "category": "omission",
+      "review_candidate": false,
+      "description": "문서 하나 + 일반적인 정리 작업 - 불필요한 질문 방지 테스트",
+      "input": {
+        "current_user_request": "정리해줘.",
+        "document_context": "프로젝트 결과보고서 초안 전체 내용"
+      },
+      "expected": {
+        "ambiguity_types": ["omission"],
+        "status": "ready",
+        "decisions": { "omission": ["RESOLVED", "SAFE_INFERENCE"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "unnecessary_question_risk": true,
+        "notes": "대상은 첨부 문서, 일반적인 정리/요약 작업으로 수행 가능. '어떻게 정리할까요?'라고 불필요하게 질문하면 실패 후보로 기록."
+      }
+    },
+    {
+      "case_id": "O4",
+      "category": "omission",
+      "review_candidate": false,
+      "description": "Context 자체가 없음",
+      "input": {
+        "current_user_request": "바꿔줘."
+      },
+      "expected": {
+        "ambiguity_types": ["omission"],
+        "status": "clarification_required",
+        "decisions": { "omission": ["CLARIFICATION_REQUIRED"] },
+        "question_count_min": 1,
+        "question_count_max": 3,
+        "notes": "작업 대상 자체를 확인할 수 없음 -> CLARIFICATION_REQUIRED."
+      }
+    },
+    {
+      "case_id": "D1",
+      "category": "degree",
+      "review_candidate": false,
+      "description": "문서에 수치 기준(700자) 존재",
+      "input": {
+        "current_user_request": "좀 줄여줘.",
+        "document_context": "자기소개서는 700자 이내로 작성해야 한다.\n현재 초안은 약 950자이다."
+      },
+      "expected": {
+        "ambiguity_types": ["degree"],
+        "status": "ready",
+        "decisions": { "degree": ["RESOLVED"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "degree": ["700자"] },
+        "improved_prompt_must_contain": ["700자"],
+        "notes": "degree 표현은 존재하지만 700자 기준을 문서에서 찾을 수 있음 -> RESOLVED, improved_prompt에 700자 이내 조건 반영."
+      }
+    },
+    {
+      "case_id": "D2",
+      "category": "degree",
+      "review_candidate": false,
+      "description": "저위험 정도 표현 (수정 대상은 명확하다고 가정)",
+      "input": {
+        "current_user_request": "설명을 조금만 더 자세하게 써줘.",
+        "recent_conversation": ["자기소개서 지원동기 초안을 작성했어."]
+      },
+      "expected": {
+        "ambiguity_types": ["degree"],
+        "status": "ready",
+        "decisions": { "degree": ["SAFE_INFERENCE"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "notes": "impact low -> SAFE_INFERENCE, 질문 없음."
+      }
+    },
+    {
+      "case_id": "D3",
+      "category": "degree",
+      "review_candidate": false,
+      "description": "기준 준수를 강조하지만 기준값이 문맥 어디에도 없음",
+      "input": {
+        "current_user_request": "분량에 맞게 줄여줘.",
+        "recent_conversation": ["User: 이번 문서는 분량 제한을 반드시 맞춰야 해."]
+      },
+      "expected": {
+        "ambiguity_types": ["degree"],
+        "status": "clarification_required",
+        "decisions": { "degree": ["CLARIFICATION_REQUIRED"] },
+        "question_count_min": 1,
+        "question_count_max": 1,
+        "question_text_hint": "분량 제한은 몇 자인가요?",
+        "notes": "결과에 중요한 수치 기준이 존재해야 하지만 실제 값이 없음 -> CLARIFICATION_REQUIRED."
+      }
+    },
+    {
+      "case_id": "D4",
+      "category": "degree",
+      "review_candidate": false,
+      "description": "이전 대화에 수치 기준(500자) 존재",
+      "input": {
+        "current_user_request": "조금 더 짧게 해줘.",
+        "recent_conversation": ["User: 지원동기는 500자 정도로 작성해야 해.", "Assistant: 확인함."]
+      },
+      "expected": {
+        "ambiguity_types": ["degree"],
+        "status": "ready",
+        "decisions": { "degree": ["SAFE_INFERENCE", "RESOLVED"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "degree": ["500자"] },
+        "notes": "이전 대화의 500자 기준을 활용해 질문 없이 처리되어야 한다."
+      }
+    },
+    {
+      "case_id": "C1",
+      "category": "comparison",
+      "review_candidate": false,
+      "description": "비교 대상 하나 - '전처럼'을 그대로 남기면 안 됨",
+      "input": {
+        "current_user_request": "성장과정도 전처럼 작성해줘.",
+        "recent_conversation": ["Assistant: 지원동기 예시 A를 작성함."]
+      },
+      "expected": {
+        "ambiguity_types": ["comparison"],
+        "status": "ready",
+        "decisions": { "comparison": ["RESOLVED"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "comparison": ["지원동기"] },
+        "improved_prompt_must_contain": ["지원동기"],
+        "improved_prompt_must_not_contain": ["전처럼"],
+        "notes": "comparison 대상 = 직전 지원동기 예시 A. 최종 prompt에서는 '전처럼'을 그대로 남기지 말고 비교 대상/기준을 명시해야 한다."
+      }
+    },
+    {
+      "case_id": "C2",
+      "category": "comparison",
+      "review_candidate": false,
+      "description": "이전 버전이 여러 개 (v1/v2/v3)",
+      "input": {
+        "current_user_request": "전처럼 다시 만들어줘.",
+        "recent_conversation": [
+          "Assistant: 보고서 v1을 작성함.",
+          "User: 수정 요청.",
+          "Assistant: 보고서 v2를 작성함.",
+          "User: 다른 방향 요청.",
+          "Assistant: 보고서 v3를 작성함."
+        ]
+      },
+      "expected": {
+        "ambiguity_types": ["comparison"],
+        "status": "clarification_required",
+        "decisions": { "comparison": ["CLARIFICATION_REQUIRED"] },
+        "question_count_min": 1,
+        "question_count_max": 1,
+        "question_options_hint": ["v1", "v2", "v3"],
+        "notes": "비교 후보가 여러 개이고 결과 차이가 큼 -> CLARIFICATION_REQUIRED. 가능하면 v1/v2/v3를 후보로 제시."
+      }
+    },
+    {
+      "case_id": "C3",
+      "category": "comparison",
+      "review_candidate": false,
+      "description": "False Positive 방지 - 비교 대상이 문장에 명시되어 있음",
+      "input": {
+        "current_user_request": "앞에서 작성한 지원동기와 비슷한 문체로 성장과정을 작성해줘.",
+        "recent_conversation": ["Assistant: 지원동기 문단을 작성함."]
+      },
+      "expected": {
+        "ambiguity_types": ["comparison"],
+        "allow_not_detected": ["comparison"],
+        "status": "ready",
+        "decisions": { "comparison": ["RESOLVED", "SAFE_INFERENCE"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "false_positive_check": true,
+        "notes": "'비슷한'이라는 표현만 보고 모호하다고 판단하면 안 됨. 비교 대상 = 지원동기, 질문 없이 처리되어야 한다."
+      }
+    },
+    {
+      "case_id": "C4",
+      "category": "comparison",
+      "review_candidate": false,
+      "description": "비교 대상 자체가 존재하지 않음",
+      "input": {
+        "current_user_request": "저번처럼 만들어줘."
+      },
+      "expected": {
+        "ambiguity_types": ["comparison"],
+        "status": "clarification_required",
+        "decisions": { "comparison": ["CLARIFICATION_REQUIRED"] },
+        "question_count_min": 1,
+        "question_count_max": 3,
+        "notes": "비교 대상 없음 -> CLARIFICATION_REQUIRED."
+      }
+    },
+    {
+      "case_id": "S1",
+      "category": "scope",
+      "review_candidate": false,
+      "description": "현재 작업 범위가 하나로 특정됨",
+      "input": {
+        "current_user_request": "여기만 고쳐줘.",
+        "recent_conversation": ["현재 자기소개서 지원동기 문단만 수정 중."]
+      },
+      "expected": {
+        "ambiguity_types": ["scope"],
+        "status": "ready",
+        "decisions": { "scope": ["RESOLVED"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "scope": ["지원동기"] },
+        "improved_prompt_must_contain": ["지원동기"],
+        "notes": "scope = 지원동기 문단, 질문 없이 처리되어야 한다."
+      }
+    },
+    {
+      "case_id": "S2",
+      "category": "scope",
+      "review_candidate": false,
+      "description": "여러 섹션 중 어느 부분인지 불명확 - reference+scope 통합 질문 기대",
+      "input": {
+        "current_user_request": "이 부분만 수정해줘.",
+        "recent_conversation": ["보고서의 기술 설명, 시장 분석, 기대 효과를 모두 검토 중."]
+      },
+      "expected": {
+        "ambiguity_types": ["reference", "scope"],
+        "status": "clarification_required",
+        "decisions": {
+          "reference": ["CLARIFICATION_REQUIRED"],
+          "scope": ["CLARIFICATION_REQUIRED"]
+        },
+        "question_count_min": 1,
+        "question_count_max": 2,
+        "question_options_hint": ["기술 설명", "시장 분석", "기대 효과"],
+        "notes": "reference와 scope 후보가 여러 개, impact high -> CLARIFICATION_REQUIRED. 질문은 reference/scope를 따로 2개 생성하지 말고 가능하면 하나로 통합하는 것이 이상적 (question_count=1이 최선, 2까지는 허용)."
+      }
+    },
+    {
+      "case_id": "S3",
+      "category": "scope",
+      "review_candidate": false,
+      "description": "전체 범위가 직접 표현됨",
+      "input": {
+        "current_user_request": "전체적으로 조금 더 자연스럽게 바꿔줘.",
+        "recent_conversation": ["자기소개서 초안을 작성함."]
+      },
+      "expected": {
+        "ambiguity_types": ["scope"],
+        "status": "ready",
+        "decisions": { "scope": ["SAFE_INFERENCE", "RESOLVED"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "notes": "scope = 전체 문서 (대상 문서는 하나), degree는 SAFE_INFERENCE 수준. 질문 없음."
+      }
+    },
+    {
+      "case_id": "S4",
+      "category": "scope",
+      "review_candidate": true,
+      "description": "'필요한 부분만' 경계 사례 - 과도한 질문 여부 확인",
+      "input": {
+        "current_user_request": "어색한 부분만 필요한 만큼 수정해줘.",
+        "document_context": "보고서 초안 하나"
+      },
+      "expected": {
+        "ambiguity_types": ["scope", "degree"],
+        "status": "ready",
+        "status_alternatives": ["clarification_required"],
+        "decisions": { "scope": ["SAFE_INFERENCE"], "degree": ["SAFE_INFERENCE"] },
+        "question_count_min": 0,
+        "question_count_max": 1,
+        "notes": "scope+degree가 존재하지만 일반적인 문장 개선 수준이라 결과 위험이 낮음 -> SAFE_INFERENCE 기대. 경계 사례이므로 과도하게 질문하는지 기록 위주로 확인한다."
+      }
+    },
+    {
+      "case_id": "M1",
+      "category": "compound",
+      "review_candidate": false,
+      "description": "reference + scope + degree 복합",
+      "input": {
+        "current_user_request": "그 부분만 좀 더 길게 해줘.",
+        "recent_conversation": [
+          "지원동기와 성장과정 두 문단을 작성함.",
+          "직전에는 성장과정에 대해 이야기함."
+        ]
+      },
+      "expected": {
+        "ambiguity_types": ["reference", "scope", "degree"],
+        "status": "ready",
+        "status_alternatives": ["clarification_required"],
+        "decisions": {
+          "reference": ["RESOLVED", "CLARIFICATION_REQUIRED"],
+          "scope": ["RESOLVED", "SAFE_INFERENCE"],
+          "degree": ["SAFE_INFERENCE"]
+        },
+        "question_count_min": 0,
+        "question_count_max": 1,
+        "improved_prompt_must_not_contain_if_ready": ["얼마나 길게"],
+        "notes": "reference가 문맥상 성장과정으로 해결되면 RESOLVED+questions=0이 이상적. 하나로 좁힐 수 없다면 대상 확인 질문 1개만 허용되고, '얼마나 길게 할까요?'(degree) 질문은 생성되면 안 된다(unnecessary)."
+      }
+    },
+    {
+      "case_id": "M2",
+      "category": "compound",
+      "review_candidate": true,
+      "description": "reference + omission + comparison 복합, 핵심 질문 선별 여부",
+      "input": {
+        "current_user_request": "그거 빼고 전처럼 해줘.",
+        "recent_conversation": [
+          "기능:\n- 자동 저장\n- 알림",
+          "이전에 기능 구성을 수정한 버전 A도 존재함."
+        ]
+      },
+      "expected": {
+        "ambiguity_types": ["reference", "omission", "comparison"],
+        "status": "clarification_required",
+        "status_alternatives": ["ready"],
+        "decisions": {
+          "reference": ["CLARIFICATION_REQUIRED", "RESOLVED"],
+          "omission": ["CLARIFICATION_REQUIRED", "RESOLVED"],
+          "comparison": ["CLARIFICATION_REQUIRED", "RESOLVED"]
+        },
+        "question_count_min": 0,
+        "question_count_max": 3,
+        "notes": "여러 종류의 모호성이 동시에 탐지될 수 있음. 작업 결과를 결정하는 핵심 reference/omission이 불명확하면 우선 그 대상에 대해 질문해야 하고, 질문 수가 불필요하게 3개까지 증가하면 과함으로 기록한다. 경계 사례라 REVIEW로 기록."
+      }
+    },
+    {
+      "case_id": "M3",
+      "category": "compound",
+      "review_candidate": false,
+      "description": "모호 표현 3개지만 질문이 필요 없는 핵심 사례",
+      "input": {
+        "current_user_request": "이거 보고 필요한 부분만 적당히 정리해줘.",
+        "document_context": "공모전 안내문 1개"
+      },
+      "expected": {
+        "ambiguity_types": ["reference", "scope", "degree"],
+        "status": "ready",
+        "decisions": {
+          "reference": ["RESOLVED"],
+          "scope": ["SAFE_INFERENCE"],
+          "degree": ["SAFE_INFERENCE"]
+        },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "notes": "매우 중요한 케이스: 모호 표현의 개수(3개)가 질문 개수를 결정해서는 안 된다. reference만 RESOLVED로 확정되고 나머지는 SAFE_INFERENCE로 질문 없이 처리되어야 한다."
+      }
+    },
+    {
+      "case_id": "M4",
+      "category": "compound",
+      "review_candidate": false,
+      "description": "comparison + scope 두 핵심 모호성이 실제로 중요한 경우",
+      "input": {
+        "current_user_request": "전에 거 기준으로 이 부분만 수정해줘.",
+        "recent_conversation": [
+          "보고서 v1과 v2가 있음.",
+          "보고서는 서론, 기술 설명, 기대 효과로 구성됨."
+        ]
+      },
+      "expected": {
+        "ambiguity_types": ["comparison", "scope"],
+        "status": "clarification_required",
+        "status_alternatives": ["ready"],
+        "decisions": {
+          "comparison": ["CLARIFICATION_REQUIRED", "RESOLVED"],
+          "scope": ["CLARIFICATION_REQUIRED", "RESOLVED"]
+        },
+        "question_count_min": 0,
+        "question_count_max": 2,
+        "question_options_hint_comparison": ["v1", "v2"],
+        "question_options_hint_scope": ["서론", "기술 설명", "기대 효과"],
+        "notes": "comparison(v1/v2)과 scope(서론/기술 설명/기대 효과) 후보 모두 결과에 큰 영향을 줄 수 있음. 질문 개수는 반드시 2개 이하여야 한다."
+      }
+    },
+    {
+      "case_id": "FP1",
+      "category": "false_positive",
+      "review_candidate": false,
+      "description": "모호 표현 뒤에 실제 대상이 즉시 명시됨 - 질문하면 안 됨",
+      "input": {
+        "current_user_request": "이 부분, 즉 결론 문단만 수정해줘."
+      },
+      "expected": {
+        "ambiguity_types": ["reference", "scope"],
+        "allow_not_detected": ["reference", "scope"],
+        "status": "ready",
+        "decisions": { "reference": ["RESOLVED", "SAFE_INFERENCE"], "scope": ["RESOLVED", "SAFE_INFERENCE"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "reference": ["결론"], "scope": ["결론"] },
+        "false_positive_check": true,
+        "notes": "'이 부분' 뒤에 실제 대상(결론 문단)이 명시됨. 질문 없이 처리되어야 한다."
+      }
+    },
+    {
+      "case_id": "FP2",
+      "category": "false_positive",
+      "review_candidate": false,
+      "description": "비교 대상이 문장 내에 명확히 명시됨 - 질문하면 안 됨",
+      "input": {
+        "current_user_request": "앞에서 작성한 지원동기와 같은 구조로 성장과정을 작성해줘."
+      },
+      "expected": {
+        "ambiguity_types": ["comparison"],
+        "allow_not_detected": ["comparison"],
+        "status": "ready",
+        "decisions": { "comparison": ["RESOLVED", "SAFE_INFERENCE"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "false_positive_check": true,
+        "notes": "비교 대상(지원동기)이 문장 자체에 명확히 존재. 질문 없이 처리되어야 한다."
+      }
+    },
+    {
+      "case_id": "FN1",
+      "category": "false_negative",
+      "review_candidate": false,
+      "description": "'이거/그거' 같은 사전 단어가 없어도 omission을 탐지해야 함",
+      "input": {
+        "current_user_request": "제출용으로 작성해줘."
+      },
+      "expected": {
+        "ambiguity_types": ["omission"],
+        "status": "clarification_required",
+        "decisions": { "omission": ["CLARIFICATION_REQUIRED"] },
+        "question_count_min": 1,
+        "question_count_max": 3,
+        "false_negative_check": true,
+        "notes": "무엇을 작성해야 하는지 대상/내용이 전혀 없음. 특정 모호 단어 사전에 의존하지 않고 omission을 탐지해야 한다."
+      }
+    },
+    {
+      "case_id": "FN2",
+      "category": "false_negative",
+      "review_candidate": false,
+      "description": "degree는 명확하지만 수정 대상이 두 문서 중 어느 것인지 생략됨",
+      "input": {
+        "current_user_request": "500자로 줄여줘.",
+        "recent_conversation": ["보고서와 자기소개서 두 문서를 동시에 다룸."]
+      },
+      "expected": {
+        "ambiguity_types": ["omission", "reference"],
+        "status": "clarification_required",
+        "decisions": { "omission": ["CLARIFICATION_REQUIRED"], "reference": ["CLARIFICATION_REQUIRED"] },
+        "decision_match_mode": "any",
+        "question_count_min": 1,
+        "question_count_max": 3,
+        "false_negative_check": true,
+        "notes": "degree(500자) 자체는 명확하지만 수정 대상이 생략됨(보고서 vs 자기소개서). omission 또는 reference 유형 중 하나라도 CLARIFICATION_REQUIRED로 탐지되어야 한다."
+      }
+    },
+    {
+      "case_id": "CTX1",
+      "category": "context_conflict",
+      "review_candidate": false,
+      "description": "최신 사용자 발화의 명시적 조건이 첨부 문서 조건보다 우선해야 함",
+      "input": {
+        "current_user_request": "그 기준으로 작성해줘.",
+        "document_context": "제출 분량: 1,000자 이하",
+        "recent_conversation": ["User: 교수님이 이번에는 700자로 작성하라고 했어."]
+      },
+      "expected": {
+        "ambiguity_types": ["reference"],
+        "status": "ready",
+        "decisions": { "reference": ["RESOLVED"] },
+        "question_count_min": 0,
+        "question_count_max": 0,
+        "resolved_keywords": { "reference": ["700자"] },
+        "improved_prompt_must_contain": ["700자"],
+        "notes": "최신 사용자 명시 조건(700자)이 문서의 1,000자 조건보다 우선해야 한다."
+      }
+    },
+    {
+      "case_id": "CTX2",
+      "category": "context_conflict",
+      "review_candidate": false,
+      "description": "두 문서의 조건이 충돌 - 마감일 차이가 결과에 큰 영향",
+      "input": {
+        "current_user_request": "이거 기준으로 준비 일정 짜줘.",
+        "document_context": "문서 A: 제출 마감일 8월 30일\n문서 B: 제출 마감일 9월 5일"
+      },
+      "expected": {
+        "ambiguity_types": ["reference"],
+        "status": "clarification_required",
+        "decisions": { "reference": ["CLARIFICATION_REQUIRED"] },
+        "question_count_min": 1,
+        "question_count_max": 1,
+        "question_options_hint": ["문서 A", "문서 B"],
+        "notes": "reference 후보 2개(문서 A/B), 마감일 차이가 결과에 큰 영향 -> CLARIFICATION_REQUIRED."
+      }
+    },
+    {
+      "case_id": "QLIMIT1",
+      "category": "question_limit",
+      "review_candidate": false,
+      "description": "질문 개수 제한 스트레스 테스트 - 여러 모호성이 동시에 탐지되어도 질문은 최대 3개, 핵심 위주로 압축되어야 함",
+      "input": {
+        "current_user_request": "그거 전처럼 적당히 바꿔서 필요한 부분만 정리해줘."
+      },
+      "expected": {
+        "ambiguity_types": ["reference", "comparison", "degree", "scope"],
+        "status": "clarification_required",
+        "status_alternatives": ["ready"],
+        "decisions": {
+          "reference": ["CLARIFICATION_REQUIRED", "RESOLVED", "SAFE_INFERENCE"],
+          "comparison": ["CLARIFICATION_REQUIRED", "RESOLVED", "SAFE_INFERENCE"],
+          "degree": ["SAFE_INFERENCE", "CLARIFICATION_REQUIRED"],
+          "scope": ["SAFE_INFERENCE", "RESOLVED", "CLARIFICATION_REQUIRED"]
+        },
+        "question_count_min": 0,
+        "question_count_max": 3,
+        "priority_check": true,
+        "notes": "context가 부족한 상태. 여러 ambiguity가 탐지될 수 있으나 질문은 최대 3개, 가능하면 1~2개로 압축되어야 한다. degree 때문에 별도 질문이 생성되지 않는 것이 바람직 (단순 <=3 확인이 아니라 핵심 ambiguity가 우선됐는지 기록)."
+      }
+    }
+  ]
+}
